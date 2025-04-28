@@ -1,0 +1,14 @@
+.idea
+.vscode
+
+__pycache__/
+media/
+db.sqlite3
+config.py
+.venv/
+.mypy_cache/
+
+*.bat
+local_settings.py
+prod_settings.py
+staticfiles/

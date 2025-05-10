@@ -1,11 +1,12 @@
-from pathlib import Path
 import os
-from ..config import SECRET_KEY
+from pathlib import Path
+from re import M
 
+from config import CONFIG_SECRET_KEY
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = SECRET_KEY
+SECRET_KEY = CONFIG_SECRET_KEY
 
 DEBUG = True
 
@@ -23,6 +24,9 @@ INSTALLED_APPS = [
 
     # Local apps
     'user.apps.UserConfig',
+    
+    # DRF
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -89,7 +93,15 @@ USE_I18N = True
 USE_TZ = True
 
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
+STATIC_ROOT = BASE_DIR / 'static'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+
+APPEND_SLASH = False
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

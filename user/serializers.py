@@ -1,5 +1,3 @@
-from turtle import up
-
 from rest_framework import serializers
 
 

@@ -3,7 +3,6 @@ import json
 from django_redis import get_redis_connection
 
 from user.models import Profile
-from user.serializers import ProfileSerializer
 
 
 class DeckBuilderService:
@@ -11,6 +10,7 @@ class DeckBuilderService:
     
     @classmethod
     def build_deck(cls, telegram_id):
+        from user.serializers import ProfileSerializer
         profile = Profile.objects.get(telegram_id=telegram_id)
         
         profile_age = profile.age

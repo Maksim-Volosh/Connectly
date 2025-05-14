@@ -1,4 +1,5 @@
-from ..models import Photo, Profile
+from user.models import Photo, Profile
+import random
 
 
 def create_profile_with_photos(validated_data):
@@ -27,3 +28,21 @@ def update_profile_with_photos(instance, validated_data):
         Photo.objects.bulk_create(photos)
         
     return instance
+
+def serialize_profiles(profiles):
+    from user.serializers import ProfileSerializer
+    serialized = ProfileSerializer(profiles, many=True).data
+    return serialized
+
+def get_profiles_by_filters(telegram_id, city, age__in, prefer_gender__in, gender={}):
+    if gender != {}:
+        profiles = Profile.objects.filter(
+            city=city, age__in=age__in, prefer_gender__in=prefer_gender__in, gender=gender).exclude(telegram_id=telegram_id)
+    else:
+        profiles = Profile.objects.filter(
+            city=city, age__in=age__in, prefer_gender__in=prefer_gender__in).exclude(telegram_id=telegram_id)
+
+    profiles = list(profiles)
+    random.shuffle(profiles)
+    
+    return profiles 

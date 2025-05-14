@@ -1,5 +1,10 @@
-from user.models import Photo, Profile
 import random
+
+from django.core.cache import cache
+from rest_framework.response import Response
+
+from user.models import Photo, Profile
+from user.serializers import ProfileSerializer
 
 
 def create_profile_with_photos(validated_data):
@@ -46,3 +51,19 @@ def get_profiles_by_filters(telegram_id, city, age__in, prefer_gender__in, gende
     random.shuffle(profiles)
     
     return profiles 
+
+def get_cached_profile(pk):
+    cache_key = f"profile:{pk}"
+    data = cache.get(cache_key)
+    
+    if not data:
+        try:
+            profile = Profile.objects.get(pk=pk)
+        except Profile.DoesNotExist:
+            return None
+        
+        serializer = ProfileSerializer(profile)
+        data = serializer.data
+        cache.set(cache_key, data, timeout=30)
+        
+    return data refactor(ProfileViewSet): extract retrieve logic to get_cached_profile helper

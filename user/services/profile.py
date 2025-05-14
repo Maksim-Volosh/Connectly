@@ -66,4 +66,4 @@ def get_cached_profile(pk):
         data = serializer.data
         cache.set(cache_key, data, timeout=30)
         
-    return data refactor(ProfileViewSet): extract retrieve logic to get_cached_profile helper
+    return data
